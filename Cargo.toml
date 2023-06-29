@@ -1,0 +1,32 @@
+cargo-features = ["per-package-target"]
+
+[package]
+name = "flipper0-template"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[package.metadata.fap]
+name = "Rust Example"
+requires = ["gui", "dialogs"]
+
+[lib]
+path = "src/main.rs"
+crate-type = ["staticlib"]
+bench = false
+test = false
+
+[features]
+default = ["prebuild"]
+# build methods:
+prebuild = ["flipper0/prebuild"]             # use pregenerated bindings
+use-local-sdk = ["flipper0/use-local-sdk"]   # try to build from source
+use-remote-sdk = ["flipper0/use-remote-sdk"] # build from remote git repo (slow)
+
+[dependencies]
+flipper0 = { git = "https://github.com/jenrik/flipper0", branch="master" }
+flipper0-sys = { git = "https://github.com/jenrik/flipper0", branch="master" }
+
+[build-dependencies]
+fap = { git = "https://github.com/jenrik/flipper0", branch="master", package="flipper0-fap-build" }
+cfg = { git = "https://github.com/jenrik/flipper0", branch="master", package="flipper0-build-cfg" }
