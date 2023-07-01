@@ -27,7 +27,7 @@ pub unsafe fn main() -> Result {
 	let gui = furi_record_open(RECORD_GUI.as_ptr() as _) as *mut Gui;
 	gui_add_view_port(gui, view_port, GuiLayer::GuiLayerFullscreen);
 
-	furi_delay(Duration::from_secs(1));
+	furi_delay(Duration::from_secs(5));
 
 	view_port_enabled_set(view_port, false);
 	gui_remove_view_port(gui, view_port);
@@ -39,8 +39,11 @@ pub unsafe fn main() -> Result {
 
 
 pub unsafe extern "C" fn draw_callback(canvas: *mut Canvas, _context: *mut c_void) {
-	static MESSAGE: &[u8] = b"Hello, Flipper!";
-	let message: &CStr = &CStr::from_ptr(MESSAGE.as_ptr() as _);
+    const MESSAGE: *const c_char = {
+        const BYTES: &[u8] = b"Hello, world!\0";
+        BYTES.as_ptr().cast()
+    };
+	let message: &CStr = CStr::from_ptr(MESSAGE);
 	canvas_draw_str(canvas, 39, 31, message.as_ptr());
 }
 

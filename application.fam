@@ -1,0 +1,16 @@
+App(
+	appid="flipper0_template",
+	apptype=FlipperAppType.EXTERNAL,
+	name="Rust Example",
+    entry_point="main",
+    sources=["target/thumbv7em-none-eabihf/release/libflipper0_template.a"],
+    requires=["gui", "dialogs"],
+    fap_version=[0, 1, 0, ],
+    fap_category="Misc",
+    fap_extbuild=(
+        ExtFile(
+            path="${FAP_WORK_DIR}/target/thumbv7em-none-eabihf/release/libflipper0_template.a",
+            command="cargo build --lib --release --verbose --target thumbv7em-none-eabihf --target-dir ${FAP_WORK_DIR}/target --manifest-path ${FAP_SRC_DIR}/Cargo.toml",
+        ),
+    ),
+)
